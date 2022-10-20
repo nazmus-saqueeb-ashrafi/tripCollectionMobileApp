@@ -11,12 +11,19 @@ const user = async () => {
     return JSON.parse(user)
 }
 
+
+
 const initialState = {
   user: user ? user : null,
   isError: false,
   isSuccess: false,
   isLoading: false,
   message: '',
+}
+
+const isLoggedIn = async () => {
+  const user = await AsyncStorage.getItem('user');
+  return state.user = JSON.parse(user)
 }
 
 //
@@ -27,7 +34,7 @@ export const register = createAsyncThunk(
   async (user, thunkAPI) => {
     try {
 
-      console.log(user)
+      // console.log(user)
       return await authService.register(user)
 
     } catch (error) {
@@ -65,7 +72,17 @@ export const logout = createAsyncThunk('auth/logout', async () => {
 
 })
 
-//
+// check if user is logged in
+export const checkLoggedIn = createAsyncThunk('auth/checkLoggedIn', async () => {
+
+  const user = await AsyncStorage.getItem('user');
+  console.log(user)
+
+  
+  return user ? JSON.parse(user) : null
+  
+
+})
 
 
 
@@ -124,6 +141,23 @@ export const authSlice = createSlice({
       
       .addCase(logout.fulfilled, (state) => {
         state.user = null
+      })
+
+
+      // check if user is logged in
+      .addCase(checkLoggedIn.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(checkLoggedIn.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        state.user = action.payload
+      })
+      .addCase(checkLoggedIn.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+       
       })
 
       

@@ -1,6 +1,7 @@
 import axios from 'axios'
+import api from "../../config/api";
 
-const API_URL = 'https://trip-collection-server.herokuapp.com/auth/'
+const API_URL = api.main_api_url + 'auth/'
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 

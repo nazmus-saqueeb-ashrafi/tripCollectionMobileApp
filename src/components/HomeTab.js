@@ -8,16 +8,6 @@ import { Marker } from 'react-native-maps';
 
 import {useRef} from "react-native";
 
-// import {
-  
-//   Text,
-//   TextInput,
-//   TouchableOpacity,
-//   View,
-//   StyleSheet,
-//   Pressable,
-// } from 'react-native';
-
 import { StyleSheet, Text, View, Dimensions, SafeAreaView, ScrollView } from 'react-native';
 
 
@@ -25,23 +15,17 @@ import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
 
 const LeftContent = props => <Avatar.Icon {...props} icon="account-circle" />
 
-import { Post } from './Post';
+
+import { Posts } from './Posts';
 
 // MapboxGL.setAccessToken('pk.eyJ1IjoibmF6bXVzLWEiLCJhIjoiY2t6dHE1cDV1NjM0ZjJvbzFzZjNzdnVleiJ9.X-ijQnMCi486JFIz2KBFww');
 
 
 export const HomeTab = () => {
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}
-      scrollEventThrottle={400}
+    
+    <Posts />
 
-      
-      >
-        <Post/>
-        <Post/>
-      </ScrollView>
-    </SafeAreaView>
   
   )
 }

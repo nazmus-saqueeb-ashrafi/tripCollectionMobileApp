@@ -1,0 +1,76 @@
+import React from 'react'
+import {
+  Button,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  StyleSheet,
+  Pressable,
+  SafeAreaView, 
+  ScrollView 
+} from 'react-native';
+
+import { useSelector, useDispatch } from 'react-redux'
+import { getTimeLinePosts,createPost } from '../features/post/postSlice';
+import {getUser} from '../features/user/userSlice';
+
+import { useEffect } from "react";
+
+import { Post } from './Post';
+
+export const Posts = () => {
+
+  const dispatch = useDispatch()
+
+  const { user } = useSelector(
+    (state) => state.auth
+  )
+
+    useEffect(()=>{
+
+      dispatch(getTimeLinePosts(user.user._id))
+      dispatch(getUser(user)) // this populated the user state when the app first loads
+
+    
+    },[])
+
+    let { timelinePosts, isLoading } = useSelector((state) => state.post);
+
+  return (
+   
+
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}
+      scrollEventThrottle={400}
+
+      
+      >
+        
+        {timelinePosts ? timelinePosts.map((post, id) => {
+            return <Post key={id} data={post}  />;
+            // return <Text>{id}</Text>
+            
+          }):null}
+        
+      </ScrollView>
+    </SafeAreaView>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 35,
+    padding: 10,
+  },
+  
+  scrollView: {
+    backgroundColor: 'white',
+    marginHorizontal: 5,
+    
+  },
+});

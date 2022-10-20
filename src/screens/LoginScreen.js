@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {
   Button,
   Text,
@@ -7,78 +7,108 @@ import {
   View,
   StyleSheet,
   Pressable,
+  useWindowDimensions,
+  ActivityIndicator,
 } from 'react-native';
 
-// import Spinner from 'react-native-loading-spinner-overlay';
-// import {AuthContext} from '../context/AuthContext';
+
 
 import { useSelector, useDispatch } from 'react-redux'
 import { login, reset } from '../features/auth/authSlice'
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 
 
 const LoginScreen = ({navigation}) => {
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
-//   const {isLoading, login} = useContext(AuthContext);
+  // const {isLoading, login} = useContext(AuthContext);
 
-const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
-const { user } = useSelector(
-        (state) => state.auth
-    )
+
+
+  const { user, isLoading } = useSelector(
+    (state) => state.auth
+  )
+
+
 
   return (
     <View style={styles.container}>
-      {/* <Spinner visible={isLoading} /> */}
-      <View style={styles.wrapper}>
-        <TextInput
-          style={styles.input}
-          value={username}
-          placeholder="Enter username"
-          onChangeText={text => setUsername(text)}
-        />
+      
+      {isLoading ? <ActivityIndicator size="large"/> :
 
-        <TextInput
-          style={styles.input}
-          value={password}
-          placeholder="Enter password"
-          onChangeText={text => setPassword(text)}
-          secureTextEntry
-        />
+        <View style={styles.wrapper}>
+          <TextInput
+            style={styles.input}
+            value={username}
+            placeholder="Enter username"
+            onChangeText={text => setUsername(text)}
+          />
 
-        <Button
-          title="Login"
-          onPress={() => {
-            // login(email, password);
-            dispatch(login({username, password}))
-            console.log(username, password)
+          <TextInput
+            style={styles.input}
+            value={password}
+            placeholder="Enter password"
+            onChangeText={text => setPassword(text)}
+            secureTextEntry
+          />
 
-          }}
-          color="cadetblue"
+          <Button
+            title="Login"
+            onPress={() => {
+              
+
+              // login(email, password);
+              dispatch(login({username, password}))
+              // console.log(username, password)
+
+            }}
+            color="cadetblue"
+
+            
+            
+          />
+
           
-          
-        />
 
-        
+          {/* <TouchableOpacity
+          style={styles.button}
+          //   onPress={() => {
+          //     login(email, password);
+          //   }}
+          >
+          <Text> Login </Text>
+          </TouchableOpacity> */}
 
-         {/* <TouchableOpacity
-         style={styles.button}
-         //   onPress={() => {
-        //     login(email, password);
-        //   }}
-        >
-         <Text> Login </Text>
-        </TouchableOpacity> */}
+          <View style={{flexDirection: 'row', marginTop: 20}}>
+            <Text>Don't have an account? </Text>
+            <TouchableOpacity onPress={() => navigation.navigate('RegistrationScreen')}>
+              <Text style={styles.link}>Register</Text>
+            </TouchableOpacity>
+          </View>
 
-        <View style={{flexDirection: 'row', marginTop: 20}}>
-          <Text>Don't have an account? </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('RegistrationScreen')}>
-            <Text style={styles.link}>Register</Text>
-          </TouchableOpacity>
         </View>
-
-      </View>
+      }
+      
+      
     </View>
+
+    // <Canvas style={{ width, height }}>
+    //   <Vertices
+    //     vertices={vertices}
+    //     indices={indices}
+    //     textures={defaultVertices}
+    //     colors={colors}
+    //   />
+    //   <Points points={vertices} style="stroke" color="white" strokeWidth={1} />
+    //   <Triangles vertices={vertices} triangles={triangles} />
+    // </Canvas>
+
+
   );
 };
 
